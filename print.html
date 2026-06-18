@@ -60,7 +60,7 @@
             const path_to_root = "";
             const default_light_theme = "navy";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-401e5742.js";
+            window.path_to_searchindex_js = "searchindex-0244b460.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-712dd4bf.js"></script>
@@ -3412,22 +3412,588 @@ for item in items:
 <p>As you may have guessed, <code>syn</code> does the exact same thing we did with our small program, but with all the complexity of a real language. So let’s see what types it offers.</p>
 <p><em>There are a lot of types on the <code>syn</code> crate, and we will only cover some of them. Once you get the hang of it, all the other will be easy to understand.</em></p>
 <p>The top level type for the AST is <code>syn::File</code>, which represents a complete Rust source file.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/file.rs.html#6-86 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_struct</span><span class="macro_bang">!</span> <span class="brace">{</span>
+<span class="boring">    <span class="hlrs-comment">/// A complete file of Rust source code.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// Typically `File` objects are created with [`parse_file`].</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`parse_file`]: crate::parse_file</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Example</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// Parse a Rust source file into a `syn::File` and print out a debug</span>
+</span><span class="boring">    <span class="hlrs-comment">/// representation of the syntax tree.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// use std::env;</span>
+</span><span class="boring">    <span class="hlrs-comment">/// use std::fs;</span>
+</span><span class="boring">    <span class="hlrs-comment">/// use std::process;</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// fn main() {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # fn fake_main() {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     let mut args = env::args();</span>
+</span><span class="boring">    <span class="hlrs-comment">///     let _ = args.next(); // executable name</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">///     let filename = match (args.next(), args.next()) {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         (Some(filename), None) =&gt; filename,</span>
+</span><span class="boring">    <span class="hlrs-comment">///         _ =&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">///             eprintln!("Usage: dump-syntax path/to/filename.rs");</span>
+</span><span class="boring">    <span class="hlrs-comment">///             process::exit(1);</span>
+</span><span class="boring">    <span class="hlrs-comment">///         }</span>
+</span><span class="boring">    <span class="hlrs-comment">///     };</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">///     let src = fs::read_to_string(&amp;filename).expect("unable to read file");</span>
+</span><span class="boring">    <span class="hlrs-comment">///     let syntax = syn::parse_file(&amp;src).expect("unable to parse file");</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">///     // Debug impl is available if Syn is built with "extra-traits" feature.</span>
+</span><span class="boring">    <span class="hlrs-comment">///     println!("{:#?}", syntax);</span>
+</span><span class="boring">    <span class="hlrs-comment">/// }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// Running with its own source code as input, this program prints output</span>
+</span><span class="boring">    <span class="hlrs-comment">/// that begins with:</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```text</span>
+</span><span class="boring">    <span class="hlrs-comment">/// File {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     shebang: None,</span>
+</span><span class="boring">    <span class="hlrs-comment">///     attrs: [],</span>
+</span><span class="boring">    <span class="hlrs-comment">///     items: [</span>
+</span><span class="boring">    <span class="hlrs-comment">///         Use(</span>
+</span><span class="boring">    <span class="hlrs-comment">///             ItemUse {</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 attrs: [],</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 vis: Inherited,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 use_token: Use,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 leading_colon: None,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 tree: Path(</span>
+</span><span class="boring">    <span class="hlrs-comment">///                     UsePath {</span>
+</span><span class="boring">    <span class="hlrs-comment">///                         ident: Ident(</span>
+</span><span class="boring">    <span class="hlrs-comment">///                             std,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                         ),</span>
+</span><span class="boring">    <span class="hlrs-comment">///                         colon2_token: Colon2,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                         tree: Name(</span>
+</span><span class="boring">    <span class="hlrs-comment">///                             UseName {</span>
+</span><span class="boring">    <span class="hlrs-comment">///                                 ident: Ident(</span>
+</span><span class="boring">    <span class="hlrs-comment">///                                     env,</span>
+</span><span class="boring">    <span class="hlrs-comment">///                                 ),</span>
+</span><span class="boring">    <span class="hlrs-comment">///                             },</span>
+</span><span class="boring">    <span class="hlrs-comment">///                         ),</span>
+</span><span class="boring">    <span class="hlrs-comment">///                     },</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 ),</span>
+</span><span class="boring">    <span class="hlrs-comment">///                 semi_token: Semi,</span>
+</span><span class="boring">    <span class="hlrs-comment">///             },</span>
+</span><span class="boring">    <span class="hlrs-comment">///         ),</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ...</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span>    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">struct</span> <span class="hlrs-type">File</span> <span class="brace">{</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">shebang</span><span class="colon">:</span> <span class="hlrs-type">Option</span><span class="angle">&lt;</span><span class="hlrs-type">String</span><span class="angle">&gt;</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">attrs</span><span class="colon">:</span> <span class="hlrs-type">Vec</span><span class="angle">&lt;</span><span class="hlrs-type">Attribute</span><span class="angle">&gt;</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">items</span><span class="colon">:</span> <span class="hlrs-type">Vec</span><span class="angle">&lt;</span><span class="hlrs-type">Item</span><span class="angle">&gt;</span><span class="comma">,</span>
+    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_struct!</span></code></pre>
 
 <p>Ok, we can see that <code>syn::File</code> is made out of a list of <code>syn::Attribute</code> and <code>syn::Item</code>. But this doesn’t tell us much, so let’s also explore them.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/attr.rs.html#23-183 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_struct</span><span class="macro_bang">!</span> <span class="brace">{</span>
+<span class="boring">    <span class="hlrs-comment">/// An attribute, like `#[repr(transparent)]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// &lt;br&gt;</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Syntax</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// Rust has six types of attributes.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Outer attributes like `#[repr(transparent)]`. These appear outside or</span>
+</span><span class="boring">    <span class="hlrs-comment">///   in front of the item they describe.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Inner attributes like `#![feature(proc_macro)]`. These appear inside</span>
+</span><span class="boring">    <span class="hlrs-comment">///   of the item they describe, usually a module.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Outer one-line doc comments like `/// Example`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Inner one-line doc comments like `//! Please file an issue`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Outer documentation blocks `/** Example */`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Inner documentation blocks `/*! Please file an issue */`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// The `style` field of type `AttrStyle` distinguishes whether an attribute</span>
+</span><span class="boring">    <span class="hlrs-comment">/// is outer or inner.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// Every attribute has a `path` that indicates the intended interpretation</span>
+</span><span class="boring">    <span class="hlrs-comment">/// of the rest of the attribute's contents. The path and the optional</span>
+</span><span class="boring">    <span class="hlrs-comment">/// additional contents are represented together in the `meta` field of the</span>
+</span><span class="boring">    <span class="hlrs-comment">/// attribute in three possible varieties:</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Meta::Path &amp;mdash; attributes whose information content conveys just a</span>
+</span><span class="boring">    <span class="hlrs-comment">///   path, for example the `#[test]` attribute.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Meta::List &amp;mdash; attributes that carry arbitrary tokens after the</span>
+</span><span class="boring">    <span class="hlrs-comment">///   path, surrounded by a delimiter (parenthesis, bracket, or brace). For</span>
+</span><span class="boring">    <span class="hlrs-comment">///   example `#[derive(Copy)]` or `#[precondition(x &lt; 5)]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// - Meta::NameValue &amp;mdash; attributes with an `=` sign after the path,</span>
+</span><span class="boring">    <span class="hlrs-comment">///   followed by a Rust expression. For example `#[path =</span>
+</span><span class="boring">    <span class="hlrs-comment">///   "sys/windows.rs"]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// All doc comments are represented in the NameValue style with a path of</span>
+</span><span class="boring">    <span class="hlrs-comment">/// "doc", as this is how they are processed by the compiler and by</span>
+</span><span class="boring">    <span class="hlrs-comment">/// `macro_rules!` macros.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```text</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #[derive(Copy, Clone)]</span>
+</span><span class="boring">    <span class="hlrs-comment">///   ~~~~~~Path</span>
+</span><span class="boring">    <span class="hlrs-comment">///   ^^^^^^^^^^^^^^^^^^^Meta::List</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #[path = "sys/windows.rs"]</span>
+</span><span class="boring">    <span class="hlrs-comment">///   ~~~~Path</span>
+</span><span class="boring">    <span class="hlrs-comment">///   ^^^^^^^^^^^^^^^^^^^^^^^Meta::NameValue</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #[test]</span>
+</span><span class="boring">    <span class="hlrs-comment">///   ^^^^Meta::Path</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// &lt;br&gt;</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Parsing from tokens to Attribute</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// This type does not implement the [`Parse`] trait and thus cannot be</span>
+</span><span class="boring">    <span class="hlrs-comment">/// parsed directly by [`ParseStream::parse`]. Instead use</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`ParseStream::call`] with one of the two parser functions</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`Attribute::parse_outer`] or [`Attribute::parse_inner`] depending on</span>
+</span><span class="boring">    <span class="hlrs-comment">/// which you intend to parse.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`Parse`]: crate::parse::Parse</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`ParseStream::parse`]: crate::parse::ParseBuffer::parse</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`ParseStream::call`]: crate::parse::ParseBuffer::call</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// use syn::{Attribute, Ident, Result, Token};</span>
+</span><span class="boring">    <span class="hlrs-comment">/// use syn::parse::{Parse, ParseStream};</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// // Parses a unit struct with attributes.</span>
+</span><span class="boring">    <span class="hlrs-comment">/// //</span>
+</span><span class="boring">    <span class="hlrs-comment">/// //     #[path = "s.tmpl"]</span>
+</span><span class="boring">    <span class="hlrs-comment">/// //     struct S;</span>
+</span><span class="boring">    <span class="hlrs-comment">/// struct UnitStruct {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     attrs: Vec&lt;Attribute&gt;,</span>
+</span><span class="boring">    <span class="hlrs-comment">///     struct_token: Token![struct],</span>
+</span><span class="boring">    <span class="hlrs-comment">///     name: Ident,</span>
+</span><span class="boring">    <span class="hlrs-comment">///     semi_token: Token![;],</span>
+</span><span class="boring">    <span class="hlrs-comment">/// }</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// impl Parse for UnitStruct {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     fn parse(input: ParseStream) -&gt; Result&lt;Self&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         Ok(UnitStruct {</span>
+</span><span class="boring">    <span class="hlrs-comment">///             attrs: input.call(Attribute::parse_outer)?,</span>
+</span><span class="boring">    <span class="hlrs-comment">///             struct_token: input.parse()?,</span>
+</span><span class="boring">    <span class="hlrs-comment">///             name: input.parse()?,</span>
+</span><span class="boring">    <span class="hlrs-comment">///             semi_token: input.parse()?,</span>
+</span><span class="boring">    <span class="hlrs-comment">///         })</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// &lt;p&gt;&lt;br&gt;&lt;/p&gt;</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Parsing from Attribute to structured arguments</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// The grammar of attributes in Rust is very flexible, which makes the</span>
+</span><span class="boring">    <span class="hlrs-comment">/// syntax tree not that useful on its own. In particular, arguments of the</span>
+</span><span class="boring">    <span class="hlrs-comment">/// `Meta::List` variety of attribute are held in an arbitrary `tokens:</span>
+</span><span class="boring">    <span class="hlrs-comment">/// TokenStream`. Macros are expected to check the `path` of the attribute,</span>
+</span><span class="boring">    <span class="hlrs-comment">/// decide whether they recognize it, and then parse the remaining tokens</span>
+</span><span class="boring">    <span class="hlrs-comment">/// according to whatever grammar they wish to require for that kind of</span>
+</span><span class="boring">    <span class="hlrs-comment">/// attribute. Use [`parse_args()`] to parse those tokens into the expected</span>
+</span><span class="boring">    <span class="hlrs-comment">/// data structure.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [`parse_args()`]: Attribute::parse_args</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// &lt;p&gt;&lt;br&gt;&lt;/p&gt;</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Doc comments</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// The compiler transforms doc comments, such as `/// comment` and `/*!</span>
+</span><span class="boring">    <span class="hlrs-comment">/// comment */`, into attributes before macros are expanded. Each comment is</span>
+</span><span class="boring">    <span class="hlrs-comment">/// expanded into an attribute of the form `#[doc = r"comment"]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// As an example, the following `mod` items are expanded identically:</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # use syn::{ItemMod, parse_quote};</span>
+</span><span class="boring">    <span class="hlrs-comment">/// let doc: ItemMod = parse_quote! {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     /// Single line doc comments</span>
+</span><span class="boring">    <span class="hlrs-comment">///     /// We write so many!</span>
+</span><span class="boring">    <span class="hlrs-comment">///     /**</span>
+</span><span class="boring">    <span class="hlrs-comment">///      * Multi-line comments...</span>
+</span><span class="boring">    <span class="hlrs-comment">///      * May span many lines</span>
+</span><span class="boring">    <span class="hlrs-comment">///      */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     mod example {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         //! Of course, they can be inner too</span>
+</span><span class="boring">    <span class="hlrs-comment">///         /*! And fit in a single line */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// };</span>
+</span><span class="boring">    <span class="hlrs-comment">/// let attr: ItemMod = parse_quote! {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     #[doc = r" Single line doc comments"]</span>
+</span><span class="boring">    <span class="hlrs-comment">///     #[doc = r" We write so many!"]</span>
+</span><span class="boring">    <span class="hlrs-comment">///     #[doc = r"</span>
+</span><span class="boring">    <span class="hlrs-comment">///      * Multi-line comments...</span>
+</span><span class="boring">    <span class="hlrs-comment">///      * May span many lines</span>
+</span><span class="boring">    <span class="hlrs-comment">///      "]</span>
+</span><span class="boring">    <span class="hlrs-comment">///     mod example {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         #![doc = r" Of course, they can be inner too"]</span>
+</span><span class="boring">    <span class="hlrs-comment">///         #![doc = r" And fit in a single line "]</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// };</span>
+</span><span class="boring">    <span class="hlrs-comment">/// assert_eq!(doc, attr);</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span>    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">any</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="comma">,</span> <span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"derive"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">struct</span> <span class="hlrs-type">Attribute</span> <span class="brace">{</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">pound_token</span><span class="colon">:</span> <span class="hlrs-macro">Token</span><span class="macro_bang">!</span><span class="bracket">[</span><span class="punctuation">#</span><span class="bracket">]</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">style</span><span class="colon">:</span> <span class="hlrs-type">AttrStyle</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">bracket_token</span><span class="colon">:</span> <span class="hlrs-type">token</span><span class="operator">:</span><span class="operator">:</span><span class="hlrs-type">Bracket</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">meta</span><span class="colon">:</span> <span class="hlrs-type">Meta</span><span class="comma">,</span>
+    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_struct!</span></code></pre>
 
 <p>So we can see an attribute, like <code>#[derive(Debug)]</code>, is represented by <code>syn::Attribute</code>. Currently, we will not dive deeper into <code>Attribute</code>, but we will cover more of it when we will use it in our macro implementation.</p>
 <p>Now let’s see <code>syn::Item</code>.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/item.rs.html#22-101 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_enum_of_structs</span><span class="macro_bang">!</span> <span class="brace">{</span>
+    <span class="hlrs-comment">/// Things that can appear directly inside of a module or scope.</span>
+    <span class="hlrs-comment">///</span>
+    <span class="hlrs-comment">/// # Syntax tree enum</span>
+    <span class="hlrs-comment">///</span>
+    <span class="hlrs-comment">/// This type is a [syntax tree enum].</span>
+    <span class="hlrs-comment">///</span>
+    <span class="hlrs-comment">/// [syntax tree enum]: crate::expr::Expr#syntax-tree-enums</span>
+    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-attribute">non_exhaustive</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">enum</span> <span class="hlrs-type">Item</span> <span class="brace">{</span>
+        <span class="hlrs-comment">/// A constant item: `const MAX: u16 = 65535`.</span>
+        <span class="hlrs-enum">Const</span><span class="parenthesis">(</span><span class="hlrs-type">ItemConst</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An enum definition: `enum Foo&lt;A, B&gt; { A(A), B(B) }`.</span>
+        <span class="hlrs-enum">Enum</span><span class="parenthesis">(</span><span class="hlrs-type">ItemEnum</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An `extern crate` item: `extern crate serde`.</span>
+        <span class="hlrs-enum">ExternCrate</span><span class="parenthesis">(</span><span class="hlrs-type">ItemExternCrate</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A free-standing function: `fn process(n: usize) -&gt; Result&lt;()&gt; { ...</span>
+        <span class="hlrs-comment">/// }`.</span>
+        <span class="hlrs-enum">Fn</span><span class="parenthesis">(</span><span class="hlrs-type">ItemFn</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A block of foreign items: `extern "C" { ... }`.</span>
+        <span class="hlrs-enum">ForeignMod</span><span class="parenthesis">(</span><span class="hlrs-type">ItemForeignMod</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An impl block providing trait or associated items: `impl&lt;A&gt; Trait</span>
+        <span class="hlrs-comment">/// for Data&lt;A&gt; { ... }`.</span>
+        <span class="hlrs-enum">Impl</span><span class="parenthesis">(</span><span class="hlrs-type">ItemImpl</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A macro invocation, which includes `macro_rules!` definitions.</span>
+        <span class="hlrs-enum">Macro</span><span class="parenthesis">(</span><span class="hlrs-type">ItemMacro</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A module or module declaration: `mod m` or `mod m { ... }`.</span>
+        <span class="hlrs-enum">Mod</span><span class="parenthesis">(</span><span class="hlrs-type">ItemMod</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A static item: `static BIKE: Shed = Shed(42)`.</span>
+        <span class="hlrs-enum">Static</span><span class="parenthesis">(</span><span class="hlrs-type">ItemStatic</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A struct definition: `struct Foo&lt;A&gt; { x: A }`.</span>
+        <span class="hlrs-enum">Struct</span><span class="parenthesis">(</span><span class="hlrs-type">ItemStruct</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A trait definition: `pub trait Iterator { ... }`.</span>
+        <span class="hlrs-enum">Trait</span><span class="parenthesis">(</span><span class="hlrs-type">ItemTrait</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A trait alias: `pub trait SharableIterator = Iterator + Sync`.</span>
+        <span class="hlrs-enum">TraitAlias</span><span class="parenthesis">(</span><span class="hlrs-type">ItemTraitAlias</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A type alias: `type Result&lt;T&gt; = core::result::Result&lt;T, MyError&gt;`.</span>
+        <span class="hlrs-enum">Type</span><span class="parenthesis">(</span><span class="hlrs-type">ItemType</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A union definition: `union Foo&lt;A, B&gt; { x: A, y: B }`.</span>
+        <span class="hlrs-enum">Union</span><span class="parenthesis">(</span><span class="hlrs-type">ItemUnion</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A use declaration: `use alloc::collections::HashMap`.</span>
+        <span class="hlrs-enum">Use</span><span class="parenthesis">(</span><span class="hlrs-type">ItemUse</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// Tokens forming an item not interpreted by Syn.</span>
+        <span class="hlrs-enum">Verbatim</span><span class="parenthesis">(</span><span class="hlrs-type">TokenStream</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+<span class="boring">        <span class="hlrs-comment">// For testing exhaustiveness in downstream code, use the following idiom:</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//     match item {</span>
+</span><span class="boring">        <span class="hlrs-comment">//         #![cfg_attr(test, deny(non_exhaustive_omitted_patterns))]</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Item::Const(item) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Item::Enum(item) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//         ...</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Item::Verbatim(item) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//         _ =&gt; { /* some sane fallback */ }</span>
+</span><span class="boring">        <span class="hlrs-comment">//     }</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">// This way we fail your tests but don't break your library when adding</span>
+</span><span class="boring">        <span class="hlrs-comment">// a variant. You will be notified by a test failure when a variant is</span>
+</span><span class="boring">        <span class="hlrs-comment">// added, so that you can add code to handle it, but your library will</span>
+</span><span class="boring">        <span class="hlrs-comment">// continue to compile and work for downstream users in the interim.</span>
+</span>    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_enum_of_structs!</span></code></pre>
 
 <p>As you can see, we have a lot of items, and I hope that you can start and recognize some of them. As an example, let’s cover <code>ItemConst</code>.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/item.rs.html#103-118 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_struct</span><span class="macro_bang">!</span> <span class="brace">{</span>
+    <span class="hlrs-comment">/// A constant item: `const MAX: u16 = 65535`.</span>
+    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">struct</span> <span class="hlrs-type">ItemConst</span> <span class="brace">{</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">attrs</span><span class="colon">:</span> <span class="hlrs-type">Vec</span><span class="angle">&lt;</span><span class="hlrs-type">Attribute</span><span class="angle">&gt;</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">vis</span><span class="colon">:</span> <span class="hlrs-type">Visibility</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">const_token</span><span class="colon">:</span> <span class="hlrs-macro">Token</span><span class="macro_bang">!</span><span class="bracket">[</span><span class="hlrs-keyword">const</span><span class="bracket">]</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">ident</span><span class="colon">:</span> <span class="hlrs-type">Ident</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">generics</span><span class="colon">:</span> <span class="hlrs-type">Generics</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">colon_token</span><span class="colon">:</span> <span class="hlrs-macro">Token</span><span class="macro_bang">!</span><span class="bracket">[</span><span class="colon">:</span><span class="bracket">]</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">ty</span><span class="colon">:</span> <span class="hlrs-type">Box</span><span class="angle">&lt;</span><span class="hlrs-type">Type</span><span class="angle">&gt;</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">eq_token</span><span class="colon">:</span> <span class="hlrs-macro">Token</span><span class="macro_bang">!</span><span class="bracket">[</span><span class="operator">=</span><span class="bracket">]</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">expr</span><span class="colon">:</span> <span class="hlrs-type">Box</span><span class="angle">&lt;</span><span class="hlrs-type">Expr</span><span class="angle">&gt;</span><span class="comma">,</span>
+        <span class="hlrs-keyword">pub</span> <span class="hlrs-variable">semi_token</span><span class="colon">:</span> <span class="hlrs-macro">Token</span><span class="macro_bang">!</span><span class="bracket">[</span><span class="semicolon">;</span><span class="bracket">]</span><span class="comma">,</span>
+    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_struct!</span></code></pre>
 
 <p>If you have noticed closely, the order of the fields in the struct definition is the same as the order in the source code. This makes it really easy to map the AST back to the source code.</p>
 <p>Also, as a side note, keywords like <code>const</code>, <code>struct</code> and punctuation like <code>:</code> and <code>=</code> does have types, but <code>syn</code> also provides a <code>Token!</code> macro that maps the literal token to its corresponding type.</p>
 <p>The last type that we are going to cover is <code>syn::Expr</code>, which represents an expression from the source code. Because most of Rust’s syntax is represented as expressions, <code>syn::Expr</code> is a very large type.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/expr.rs.html#37-269 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_enum_of_structs</span><span class="macro_bang">!</span> <span class="brace">{</span>
+<span class="boring">    <span class="hlrs-comment">/// A Rust expression.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// *This type is available only if Syn is built with the `"derive"` or `"full"`</span>
+</span><span class="boring">    <span class="hlrs-comment">/// feature, but most of the variants are not available unless "full" is enabled.*</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Syntax tree enums</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// This type is a syntax tree enum. In Syn this and other syntax tree enums</span>
+</span><span class="boring">    <span class="hlrs-comment">/// are designed to be traversed using the following rebinding idiom.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # use syn::Expr;</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # fn example(expr: Expr) {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # const IGNORE: &amp;str = stringify! {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// let expr: Expr = /* ... */;</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # };</span>
+</span><span class="boring">    <span class="hlrs-comment">/// match expr {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     Expr::MethodCall(expr) =&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         /* ... */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">///     Expr::Cast(expr) =&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         /* ... */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">///     Expr::If(expr) =&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">///         /* ... */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     }</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">///     /* ... */</span>
+</span><span class="boring">    <span class="hlrs-comment">///     # _ =&gt; {}</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// We begin with a variable `expr` of type `Expr` that has no fields</span>
+</span><span class="boring">    <span class="hlrs-comment">/// (because it is an enum), and by matching on it and rebinding a variable</span>
+</span><span class="boring">    <span class="hlrs-comment">/// with the same name `expr` we effectively imbue our variable with all of</span>
+</span><span class="boring">    <span class="hlrs-comment">/// the data fields provided by the variant that it turned out to be. So for</span>
+</span><span class="boring">    <span class="hlrs-comment">/// example above if we ended up in the `MethodCall` case then we get to use</span>
+</span><span class="boring">    <span class="hlrs-comment">/// `expr.receiver`, `expr.args` etc; if we ended up in the `If` case we get</span>
+</span><span class="boring">    <span class="hlrs-comment">/// to use `expr.cond`, `expr.then_branch`, `expr.else_branch`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// This approach avoids repeating the variant names twice on every line.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # use syn::{Expr, ExprMethodCall};</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # fn example(expr: Expr) {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// // Repetitive; recommend not doing this.</span>
+</span><span class="boring">    <span class="hlrs-comment">/// match expr {</span>
+</span><span class="boring">    <span class="hlrs-comment">///     Expr::MethodCall(ExprMethodCall { method, args, .. }) =&gt; {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # _ =&gt; {}</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// In general, the name to which a syntax tree enum variant is bound should</span>
+</span><span class="boring">    <span class="hlrs-comment">/// be a suitable name for the complete syntax tree enum type.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # use syn::{Expr, ExprField};</span>
+</span><span class="boring">    <span class="hlrs-comment">/// #</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # fn example(discriminant: ExprField) {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// // Binding is called `base` which is the name I would use if I were</span>
+</span><span class="boring">    <span class="hlrs-comment">/// // assigning `*discriminant.base` without an `if let`.</span>
+</span><span class="boring">    <span class="hlrs-comment">/// if let Expr::Tuple(base) = *discriminant.base {</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # }</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ```</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// A sign that you may not be choosing the right variable names is if you</span>
+</span><span class="boring">    <span class="hlrs-comment">/// see names getting repeated in your code, like accessing</span>
+</span><span class="boring">    <span class="hlrs-comment">/// `receiver.receiver` or `pat.pat` or `cond.cond`.</span>
+</span>    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">any</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="comma">,</span> <span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"derive"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-attribute">non_exhaustive</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">enum</span> <span class="hlrs-type">Expr</span> <span class="brace">{</span>
+        <span class="hlrs-comment">/// A slice literal expression: `[a, b, c, d]`.</span>
+        <span class="hlrs-enum">Array</span><span class="parenthesis">(</span><span class="hlrs-type">ExprArray</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An assignment expression: `a = compute()`.</span>
+        <span class="hlrs-enum">Assign</span><span class="parenthesis">(</span><span class="hlrs-type">ExprAssign</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An async block: `async { ... }`.</span>
+        <span class="hlrs-enum">Async</span><span class="parenthesis">(</span><span class="hlrs-type">ExprAsync</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An await expression: `fut.await`.</span>
+        <span class="hlrs-enum">Await</span><span class="parenthesis">(</span><span class="hlrs-type">ExprAwait</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A binary operation: `a + b`, `a += b`.</span>
+        <span class="hlrs-enum">Binary</span><span class="parenthesis">(</span><span class="hlrs-type">ExprBinary</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A blocked scope: `{ ... }`.</span>
+        <span class="hlrs-enum">Block</span><span class="parenthesis">(</span><span class="hlrs-type">ExprBlock</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A `break`, with an optional label to break and an optional</span>
+        <span class="hlrs-comment">/// expression.</span>
+        <span class="hlrs-enum">Break</span><span class="parenthesis">(</span><span class="hlrs-type">ExprBreak</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A function call expression: `invoke(a, b)`.</span>
+        <span class="hlrs-enum">Call</span><span class="parenthesis">(</span><span class="hlrs-type">ExprCall</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A cast expression: `foo as f64`.</span>
+        <span class="hlrs-enum">Cast</span><span class="parenthesis">(</span><span class="hlrs-type">ExprCast</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A closure expression: `|a, b| a + b`.</span>
+        <span class="hlrs-enum">Closure</span><span class="parenthesis">(</span><span class="hlrs-type">ExprClosure</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A const block: `const { ... }`.</span>
+        <span class="hlrs-enum">Const</span><span class="parenthesis">(</span><span class="hlrs-type">ExprConst</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A `continue`, with an optional label.</span>
+        <span class="hlrs-enum">Continue</span><span class="parenthesis">(</span><span class="hlrs-type">ExprContinue</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// Access of a named struct field (`obj.k`) or unnamed tuple struct</span>
+        <span class="hlrs-comment">/// field (`obj.0`).</span>
+        <span class="hlrs-enum">Field</span><span class="parenthesis">(</span><span class="hlrs-type">ExprField</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A for loop: `for pat in expr { ... }`.</span>
+        <span class="hlrs-enum">ForLoop</span><span class="parenthesis">(</span><span class="hlrs-type">ExprForLoop</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An expression contained within invisible delimiters.</span>
+        <span class="hlrs-comment">///</span>
+        <span class="hlrs-comment">/// This variant is important for faithfully representing the precedence</span>
+        <span class="hlrs-comment">/// of expressions and is related to `None`-delimited spans in a</span>
+        <span class="hlrs-comment">/// `TokenStream`.</span>
+        <span class="hlrs-enum">Group</span><span class="parenthesis">(</span><span class="hlrs-type">ExprGroup</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An `if` expression with an optional `else` block: `if expr { ... }</span>
+        <span class="hlrs-comment">/// else { ... }`.</span>
+        <span class="hlrs-comment">///</span>
+        <span class="hlrs-comment">/// The `else` branch expression may only be an `If` or `Block`</span>
+        <span class="hlrs-comment">/// expression, not any of the other types of expression.</span>
+        <span class="hlrs-enum">If</span><span class="parenthesis">(</span><span class="hlrs-type">ExprIf</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A square bracketed indexing expression: `vector[2]`.</span>
+        <span class="hlrs-enum">Index</span><span class="parenthesis">(</span><span class="hlrs-type">ExprIndex</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// The inferred value of a const generic argument, denoted `_`.</span>
+        <span class="hlrs-enum">Infer</span><span class="parenthesis">(</span><span class="hlrs-type">ExprInfer</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A `let` guard: `let Some(x) = opt`.</span>
+        <span class="hlrs-enum">Let</span><span class="parenthesis">(</span><span class="hlrs-type">ExprLet</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A literal in place of an expression: `1`, `"foo"`.</span>
+        <span class="hlrs-enum">Lit</span><span class="parenthesis">(</span><span class="hlrs-type">ExprLit</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// Conditionless loop: `loop { ... }`.</span>
+        <span class="hlrs-enum">Loop</span><span class="parenthesis">(</span><span class="hlrs-type">ExprLoop</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A macro invocation expression: `format!("{}", q)`.</span>
+        <span class="hlrs-enum">Macro</span><span class="parenthesis">(</span><span class="hlrs-type">ExprMacro</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A `match` expression: `match n { Some(n) =&gt; {}, None =&gt; {} }`.</span>
+        <span class="hlrs-enum">Match</span><span class="parenthesis">(</span><span class="hlrs-type">ExprMatch</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A method call expression: `x.foo::&lt;T&gt;(a, b)`.</span>
+        <span class="hlrs-enum">MethodCall</span><span class="parenthesis">(</span><span class="hlrs-type">ExprMethodCall</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A parenthesized expression: `(a + b)`.</span>
+        <span class="hlrs-enum">Paren</span><span class="parenthesis">(</span><span class="hlrs-type">ExprParen</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A path like `core::mem::replace` possibly containing generic</span>
+        <span class="hlrs-comment">/// parameters and a qualified self-type.</span>
+        <span class="hlrs-comment">///</span>
+        <span class="hlrs-comment">/// A plain identifier like `x` is a path of length 1.</span>
+        <span class="hlrs-enum">Path</span><span class="parenthesis">(</span><span class="hlrs-type">ExprPath</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A range expression: `1..2`, `1..`, `..2`, `1..=2`, `..=2`.</span>
+        <span class="hlrs-enum">Range</span><span class="parenthesis">(</span><span class="hlrs-type">ExprRange</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// Address-of operation: `&amp;raw const place` or `&amp;raw mut place`.</span>
+        <span class="hlrs-enum">RawAddr</span><span class="parenthesis">(</span><span class="hlrs-type">ExprRawAddr</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A referencing operation: `&amp;a` or `&amp;mut a`.</span>
+        <span class="hlrs-enum">Reference</span><span class="parenthesis">(</span><span class="hlrs-type">ExprReference</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An array literal constructed from one repeated element: `[0u8; N]`.</span>
+        <span class="hlrs-enum">Repeat</span><span class="parenthesis">(</span><span class="hlrs-type">ExprRepeat</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A `return`, with an optional value to be returned.</span>
+        <span class="hlrs-enum">Return</span><span class="parenthesis">(</span><span class="hlrs-type">ExprReturn</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A struct literal expression: `Point { x: 1, y: 1 }`.</span>
+        <span class="hlrs-comment">///</span>
+        <span class="hlrs-comment">/// The `rest` provides the value of the remaining fields as in `S { a:</span>
+        <span class="hlrs-comment">/// 1, b: 1, ..rest }`.</span>
+        <span class="hlrs-enum">Struct</span><span class="parenthesis">(</span><span class="hlrs-type">ExprStruct</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A try-expression: `expr?`.</span>
+        <span class="hlrs-enum">Try</span><span class="parenthesis">(</span><span class="hlrs-type">ExprTry</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A try block: `try { ... }`.</span>
+        <span class="hlrs-enum">TryBlock</span><span class="parenthesis">(</span><span class="hlrs-type">ExprTryBlock</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A tuple expression: `(a, b, c, d)`.</span>
+        <span class="hlrs-enum">Tuple</span><span class="parenthesis">(</span><span class="hlrs-type">ExprTuple</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A unary operation: `!x`, `*x`, `-x`.</span>
+        <span class="hlrs-enum">Unary</span><span class="parenthesis">(</span><span class="hlrs-type">ExprUnary</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// An unsafe block: `unsafe { ... }`.</span>
+        <span class="hlrs-enum">Unsafe</span><span class="parenthesis">(</span><span class="hlrs-type">ExprUnsafe</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// Tokens in expression position not interpreted by Syn.</span>
+        <span class="hlrs-enum">Verbatim</span><span class="parenthesis">(</span><span class="hlrs-type">TokenStream</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A while loop: `while expr { ... }`.</span>
+        <span class="hlrs-enum">While</span><span class="parenthesis">(</span><span class="hlrs-type">ExprWhile</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A yield expression: `yield expr`.</span>
+        <span class="hlrs-enum">Yield</span><span class="parenthesis">(</span><span class="hlrs-type">ExprYield</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+<span class="boring">        <span class="hlrs-comment">// For testing exhaustiveness in downstream code, use the following idiom:</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//     match expr {</span>
+</span><span class="boring">        <span class="hlrs-comment">//         #![cfg_attr(test, deny(non_exhaustive_omitted_patterns))]</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Expr::Array(expr) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Expr::Assign(expr) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//         ...</span>
+</span><span class="boring">        <span class="hlrs-comment">//         Expr::Yield(expr) =&gt; {...}</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">//         _ =&gt; { /* some sane fallback */ }</span>
+</span><span class="boring">        <span class="hlrs-comment">//     }</span>
+</span><span class="boring">        <span class="hlrs-comment">//</span>
+</span><span class="boring">        <span class="hlrs-comment">// This way we fail your tests but don't break your library when adding</span>
+</span><span class="boring">        <span class="hlrs-comment">// a variant. You will be notified by a test failure when a variant is</span>
+</span><span class="boring">        <span class="hlrs-comment">// added, so that you can add code to handle it, but your library will</span>
+</span><span class="boring">        <span class="hlrs-comment">// continue to compile and work for downstream users in the interim.</span>
+</span>    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_enum_of_structs!</span></code></pre>
 
 <p>These types are very powerful and help us express language in a structured way. As a quick example, let’s see how <code>syn::ItemStruct</code> is represented in the AST. In this example, we have the exact same struct that we showed its <code>TokenStream</code> representation.</p>
 <pre><code>ItemStruct {
@@ -3486,7 +4052,16 @@ for item in items:
 <p>As you can see, what was before a list of punctuations and idents has now become a structured representation that is easier to work with.</p>
 <p>The most important thing about Syn is that we can use the types that it offers to create new, custom types that are not bound to the language’s AST.</p>
 <p>But how would Syn know to parse our custom syntax into the AST types it offers? This is where the <code>Parse</code> trait comes in. When Syn wants to parse our custom syntax, it will call the <code>parse</code> method from the <code>Parse</code> trait and pass in the token stream to parse.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/parse.rs.html#208-217 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-comment">/// Parsing interface implemented by all types that can be parsed in a default</span>
+<span class="hlrs-comment">/// way from a token stream.</span>
+<span class="hlrs-comment">///</span>
+<span class="hlrs-comment">/// Refer to the</span> <span class="hlrs-type">[module documentation]</span><span class="hlrs-comment"> for details about implementing and using</span>
+<span class="hlrs-comment">/// the `Parse` trait.</span>
+<span class="hlrs-comment">///</span>
+<span class="hlrs-comment">/// [module documentation]: self</span>
+<span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">trait</span> <span class="hlrs-type">Parse</span><span class="colon">:</span> <span class="hlrs-type">Sized</span> <span class="brace">{</span>
+    <span class="hlrs-keyword">fn</span> <span class="hlrs-function">parse</span><span class="parenthesis">(</span><span class="hlrs-variable">input</span><span class="colon">:</span> <span class="hlrs-type">ParseStream</span><span class="parenthesis">)</span> <span class="operator">-&gt;</span> <span class="hlrs-type">Result</span><span class="angle">&lt;</span><span class="hlrs-selftoken">Self</span><span class="angle">&gt;</span><span class="semicolon">;</span>
+<span class="brace">}</span></code></pre>
 
 <p>We will go deeper into this when we create our own custom <code>Parse</code> implementation. One important thing to understand is that all of syn’s types implement <code>Parse</code> themselves, so most of the time, implementing <code>Parse</code> for types that are built from syn’s AST types is easy.</p>
 <p>Up until now, we have learned how to parse our source code into a meaningful AST representation. This representation will help us to work with the syntax and to implement our macro’s logic. But, after we parsed the source code and processed it to our needs, we needed to return it to a <code>TokenStream</code>. This is where the <code>quote</code> crate comes in.</p>
@@ -3857,7 +4432,13 @@ struct MyFlags {
 <span class="brace">}</span></code></pre>
 
 <p>If you were wondering why we are calling the <code>parse</code> function on the input instead of on the type itself. It is because the <code>ParseStream</code> implements this very convenient <code>parse</code> function that allows us to parse a single token from the stream at a time.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/parse.rs.html#464-468 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-keyword">impl</span><span class="angle">&lt;</span><span class="hlrs-lifetime">'a</span><span class="angle">&gt;</span> <span class="hlrs-type">ParseBuffer</span><span class="angle">&lt;</span><span class="hlrs-lifetime">'a</span><span class="angle">&gt;</span> <span class="brace">{</span>
+    <span class="hlrs-comment">/// Parses a syntax tree node of type `T`, advancing the position of our</span>
+    <span class="hlrs-comment">/// parse stream past it.</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">fn</span> <span class="hlrs-function">parse</span><span class="angle">&lt;</span><span class="hlrs-type">T</span><span class="colon">:</span> <span class="hlrs-type">Parse</span><span class="angle">&gt;</span><span class="parenthesis">(</span><span class="punctuation">&amp;</span><span class="hlrs-selftoken">self</span><span class="parenthesis">)</span> <span class="operator">-&gt;</span> <span class="hlrs-type">Result</span><span class="angle">&lt;</span><span class="hlrs-type">T</span><span class="angle">&gt;</span> <span class="brace">{</span>
+        <span class="hlrs-type">T</span><span class="operator">::</span><span class="hlrs-function">parse</span><span class="parenthesis">(</span><span class="inlay-hint">input:</span> <span class="hlrs-selftoken">self</span><span class="parenthesis">)</span>
+    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">impl ParseBuffer&lt;'a&gt;</span></code></pre>
 
 <p>Next, let’s parse something that takes a little more effort, our <code>FlagPermission</code>.</p>
 <pre class=""><code class="language-rust  fp=&lt;repo&gt;crates/macros/src/bitfields/flag_attr.rs#L173 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-keyword">impl</span> <span class="hlrs-type">Parse</span> <span class="hlrs-keyword">for</span> <span class="hlrs-type">FlagPermission</span> <span class="brace">{</span>
@@ -4019,7 +4600,38 @@ struct MyFlags {
 
 <p>Although we implemented <code>Parse</code> for <code>FlagAttribute</code>, we are not going to create it from raw tokens. Because, if you noticed, we only parsed the inside of the attribute, but not the <code>#[flag()]</code> part.
 For that, we are going to use the <code>Meta</code> part of our <code>syn::Attribute</code>.</p>
-<pre class=""><code class="language-rust  icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"></code></pre>
+<pre class=""><code class="language-rust  fp=&lt;rust-crate&gt;syn/2.0.118/src/syn/attr.rs.html#455-486 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-macro">ast_enum</span><span class="macro_bang">!</span> <span class="brace">{</span>
+<span class="boring">    <span class="hlrs-comment">/// Content of a compile-time structured attribute.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ## Path</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// A meta path is like the `test` in `#[test]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ## List</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// A meta list is like the `derive(Copy)` in `#[derive(Copy)]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// ## NameValue</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// A name-value meta is like the `path = "..."` in `#[path =</span>
+</span><span class="boring">    <span class="hlrs-comment">/// "sys/windows.rs"]`.</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// # Syntax tree enum</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// This type is a [syntax tree enum].</span>
+</span><span class="boring">    <span class="hlrs-comment">///</span>
+</span><span class="boring">    <span class="hlrs-comment">/// [syntax tree enum]: crate::expr::Expr#syntax-tree-enums</span>
+</span>    <span class="punctuation">#</span><span class="bracket">[</span><span class="hlrs-keyword">cfg_attr</span><span class="parenthesis">(</span><span class="none">docsrs</span><span class="comma">,</span> <span class="hlrs-attribute">doc</span><span class="parenthesis">(</span><span class="none">cfg</span><span class="parenthesis">(</span><span class="none">any</span><span class="parenthesis">(</span><span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"full"</span><span class="comma">,</span> <span class="none">feature</span> <span class="operator">=</span> <span class="hlrs-litstr">"derive"</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="parenthesis">)</span><span class="bracket">]</span>
+    <span class="hlrs-keyword">pub</span> <span class="hlrs-keyword">enum</span> <span class="hlrs-type">Meta</span> <span class="brace">{</span>
+        <span class="hlrs-enum">Path</span><span class="parenthesis">(</span><span class="hlrs-type">Path</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A structured list within an attribute, like `derive(Copy, Clone)`.</span>
+        <span class="hlrs-enum">List</span><span class="parenthesis">(</span><span class="hlrs-type">MetaList</span><span class="parenthesis">)</span><span class="comma">,</span>
+
+        <span class="hlrs-comment">/// A name-value pair within an attribute, like `feature = "nightly"`.</span>
+        <span class="hlrs-enum">NameValue</span><span class="parenthesis">(</span><span class="hlrs-type">MetaNameValue</span><span class="parenthesis">)</span><span class="comma">,</span>
+    <span class="brace">}</span>
+<span class="brace">}</span> <span class="inlay-hint">ast_enum!</span></code></pre>
 
 <p>In our case, we are going to have a <code>Meta::List</code>, which contains a <code>TokenStream</code> of the attribute’s contents, hence the implementation of the <code>Parse</code> trait.</p>
 <pre class=""><code class="language-rust  fp=&lt;repo&gt;crates/macros/src/bitfields/flag_attr.rs#L122 icon=@https://www.rust-lang.org/static/images/rust-logo-blk.svg"><span class="hlrs-keyword">impl</span> <span class="hlrs-type">TryFrom</span><span class="angle">&lt;</span><span class="punctuation">&amp;</span><span class="hlrs-type">Meta</span><span class="angle">&gt;</span> <span class="hlrs-keyword">for</span> <span class="hlrs-type">FlagAttribute</span> <span class="brace">{</span>
